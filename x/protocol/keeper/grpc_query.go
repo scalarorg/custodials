@@ -46,7 +46,7 @@ func (k Keeper) Protocol(c context.Context, req *types.ProtocolRequest) (*types.
 			//Check if the address is supported by the protocol
 			addressMatched := false
 			for _, chain := range protocol.MinorAddresses {
-				if chain.ChainName == req.MinorChain && strings.TrimPrefix(chain.Address, "0x") == strings.TrimPrefix(req.Address, "0x") {
+				if strings.EqualFold(chain.ChainName.String(), req.MinorChain.String()) && strings.EqualFold(strings.TrimPrefix(chain.Address, "0x"), strings.TrimPrefix(req.Address, "0x")) {
 					addressMatched = true
 					break
 				}
