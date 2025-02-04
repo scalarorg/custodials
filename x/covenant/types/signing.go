@@ -97,10 +97,10 @@ func (m SigningSession) ValidateBasic() error {
 		return fmt.Errorf("unexpected state %s", m.GetState())
 	}
 
-	for addr, sigs := range m.PsbtMultiSig.ParticipantTapScriptSigs {
-		pubKey, ok := m.Key.PubKeys[addr]
+	for _, sigs := range m.PsbtMultiSig.ParticipantTapScriptSigs {
+		pubKey, ok := m.Key.PubKeys[sigs.Participant]
 		if !ok {
-			return fmt.Errorf("participant %s does not have public key submitted", addr)
+			return fmt.Errorf("participant %s does not have public key submitted", sigs.Participant)
 		}
 
 		// TODO: Implement signature verification
@@ -116,7 +116,7 @@ func (m SigningSession) ValidateBasic() error {
 }
 
 // AddTapScriptSigs adds the given tapscript sigs to the signing session
-func (m *SigningSession) AddTapScriptSigs(blockHeight int64, participant sdk.ValAddress, inputSigs *exported.TapScriptSigsMap) error {
+func (m *SigningSession) AddTapScriptSigs(blockHeight int64, participant sdk.ValAddress, inputSigs *exported.PsbtTapScriptSigs) error {
 	if m.PsbtMultiSig.ParticipantTapScriptSigs == nil {
 		m.PsbtMultiSig.ParticipantTapScriptSigs = make(map[string]*exported.TapScriptSigsMap)
 	}
@@ -201,7 +201,7 @@ func (m SigningSession) GetMetadata() codec.ProtoMarshaler {
 	return m.ModuleMetadata.GetCachedValue().(codec.ProtoMarshaler)
 }
 
-func (m *SigningSession) addSig(participant sdk.ValAddress, sigs *exported.TapScriptSigsMap) {
+func (m *SigningSession) addSig(participant sdk.ValAddress, sigs *exported.PsbtTapScriptSigs) {
 	clog.Redf("addSig, participant: %+s", participant.String())
 	clog.Redf("addSig, sigs: %+v", sigs)
 	m.PsbtMultiSig.ParticipantTapScriptSigs[participant.String()] = sigs
@@ -258,7 +258,7 @@ func (m PsbtMultiSig) ValidateBasic() error {
 }
 
 // GetSignature returns the ECDSA signature of the given participant
-func (m PsbtMultiSig) GetTapScriptSigsMap(p sdk.ValAddress) (*exported.TapScriptSigsMap, bool) {
+func (m PsbtMultiSig) GetTapScriptSigsMap(p sdk.ValAddress) (*exported.PsbtTapScriptSigs, bool) {
 	sigs, ok := m.ParticipantTapScriptSigs[p.String()]
 	if !ok {
 		return nil, false

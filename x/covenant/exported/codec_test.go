@@ -41,8 +41,8 @@ func TestCodec(t *testing.T) {
 		t.Fatalf("failed to marshal leaf hash: %v", err)
 	}
 
-	tapScriptList := exported.TapScriptSigsMap{
-		Inner: map[uint64]*exported.TapScriptSigsList{
+	tapScriptList := exported.PsbtTapScriptSigs{
+		Inner: []*exported.InputTapScriptSigs{
 			0: {
 				List: []*exported.TapScriptSig{
 					{
@@ -64,7 +64,7 @@ func TestCodec(t *testing.T) {
 
 	fmt.Println(hex.EncodeToString(data))
 
-	unmarshaled := exported.TapScriptSigsMap{}
+	unmarshaled := exported.PsbtTapScriptSigs{}
 	err = unmarshaled.Unmarshal(data)
 	if err != nil {
 		t.Fatalf("failed to unmarshal tap script list: %v", err)

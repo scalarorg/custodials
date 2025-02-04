@@ -24,7 +24,7 @@ func (s msgServer) SubmitTapScriptSigs(c context.Context, req *types.SubmitTapSc
 		return nil, fmt.Errorf("sender %s is not a registered proxy", req.Sender.String())
 	}
 
-	if err := signingSession.AddTapScriptSigs(ctx.BlockHeight(), participant, req.TapScriptSigsMap); err != nil {
+	if err := signingSession.AddTapScriptSigs(ctx.BlockHeight(), participant, req.PsbtTapScriptSigs); err != nil {
 		return nil, sdkerrors.Wrap(err, "unable to add signature for signing")
 	}
 
@@ -41,7 +41,7 @@ func (s msgServer) SubmitTapScriptSigs(c context.Context, req *types.SubmitTapSc
 		"expires_at", signingSession.ExpiresAt,
 	)
 
-	events.Emit(ctx, types.NewTapscriptSigsSubmitted(req.SigID, participant, req.TapScriptSigsMap))
+	events.Emit(ctx, types.NewTapscriptSigsSubmitted(req.SigID, participant, req.PsbtTapScriptSigs))
 
 	return &types.SubmitTapScriptSigsResponse{}, nil
 }

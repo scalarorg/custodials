@@ -46,7 +46,7 @@ func (p PsbtPayload) ValidateBasic() error {
 
 type TapScriptSig []byte
 
-var DefaultParticipantTapScriptSigs = make(map[string]*exported.TapScriptSigsMap)
+var DefaultParticipantTapScriptSigs = make(map[string]*exported.PsbtTapScriptSigs)
 
 func (g CustodianGroup) CreateKey(ctx sdk.Context, snapshot snapshot.Snapshot, threshold utils.Threshold) multisigTypes.Key {
 	pubKeys := map[string]multisig.PublicKey{}

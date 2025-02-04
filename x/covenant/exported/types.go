@@ -162,13 +162,13 @@ func (t *TapScriptSig) ValidateBasic() error {
 	return nil
 }
 
-var EmptyTapScriptSigsList = TapScriptSigsList{}
+var EmptyInputTapScriptSigs = InputTapScriptSigs{}
 
-var EmptyTapScriptSigsMap = TapScriptSigsMap{
-	Inner: make(map[uint64]*TapScriptSigsList),
+var EmptyPsbtTapScriptSigs = PsbtTapScriptSigs{
+	Inner: make([]*InputTapScriptSigs, 0),
 }
 
-func (t *TapScriptSigsMap) ValidateBasic() error {
+func (t *PsbtTapScriptSigs) ValidateBasic() error {
 	for _, sig := range t.Inner {
 		for _, sig := range sig.List {
 			if err := sig.ValidateBasic(); err != nil {
@@ -179,8 +179,8 @@ func (t *TapScriptSigsMap) ValidateBasic() error {
 	return nil
 }
 
-func (t *TapScriptSigsMap) ToRaw() utiltypes.TapScriptSigsMap {
-	raw := make(utiltypes.TapScriptSigsMap)
+func (t *PsbtTapScriptSigs) ToRaw() utiltypes.PsbtTapScriptSigs {
+	raw := make(utiltypes.PsbtTapScriptSigs, len(t.Inner))
 	for inputIndex, tapScriptList := range t.Inner {
 		raw[inputIndex] = []utiltypes.TapScriptSig{}
 		for _, tapScriptSig := range tapScriptList.List {
@@ -194,10 +194,20 @@ func (t *TapScriptSigsMap) ToRaw() utiltypes.TapScriptSigsMap {
 	return raw
 }
 
-func NewTapScriptSigsMapFromRaw(raw utiltypes.TapScriptSigsMap) *TapScriptSigsMap {
-	mapOfTapScriptSigs := make(map[uint64]*TapScriptSigsList)
+func (t *PsbtTapScriptSigs) Len() int {
+	size := 0
+	for _, inputTapScriptSigs := range t.Inner {
+		for _, tapScriptSig := range inputTapScriptSigs.List {
+			size += tapScriptSig.Size()
+		}
+	}
+	return size
+}
+
+func NewPsbtTapScriptSigsFromRawMap(raw utiltypes.TapScriptSigsMap) *PsbtTapScriptSigs {
+	psbtTapScriptSigs := make([]*InputTapScriptSigs, len(raw))
 	for inputIndex, tapScriptSigs := range raw {
-		mapOfTapScriptSigs[inputIndex] = &TapScriptSigsList{
+		psbtTapScriptSigs[inputIndex] = &InputTapScriptSigs{
 			List: slices.Map(tapScriptSigs, func(t utiltypes.TapScriptSig) *TapScriptSig {
 				keyXOnly := KeyXOnly(t.KeyXOnly)
 				signature := Signature(t.Signature)
@@ -211,7 +221,7 @@ func NewTapScriptSigsMapFromRaw(raw utiltypes.TapScriptSigsMap) *TapScriptSigsMa
 		}
 	}
 
-	return &TapScriptSigsMap{
-		Inner: mapOfTapScriptSigs,
+	return &PsbtTapScriptSigs{
+		Inner: psbtTapScriptSigs,
 	}
 }

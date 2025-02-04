@@ -216,10 +216,12 @@ func (v voteHandler) handleEvent(ctx sdk.Context, ck types.ChainKeeper, event ty
 	eventType := event.GetEvent()
 	switch eventType.(type) {
 	case *types.Event_SourceTxConfirmationEvent:
+		clog.Blue("handleEvent, SourceTxConfirmationEvent", "event", event.GetID())
 		if err := v.handleCrossChainEvent(ctx, ck, event); err != nil {
 			return err
 		}
 	default:
+		clog.Blue("handleEvent, default", "event", event.GetID())
 		funcs.MustNoErr(ck.EnqueueConfirmedEvent(ctx, event.GetID()))
 	}
 

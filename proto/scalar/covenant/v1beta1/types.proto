@@ -43,6 +43,11 @@ enum Status {
   STATUS_DEACTIVATED = 2 [(gogoproto.enumvalue_customname) = "Deactivated"];
 }
 
+// message ParticipantTapScriptSigs {
+//   string participant = 1;
+//   repeated scalar.covenant.exported.v1beta1.TapScriptSig list = 2;
+// }
+
 message PsbtMultiSig {
   option (gogoproto.stable_marshaler) = true;
 
@@ -51,7 +56,7 @@ message PsbtMultiSig {
     (gogoproto.casttype) = "github.com/scalarorg/scalar-core/x/multisig/exported.KeyID"
   ];
   bytes psbt = 2 [(gogoproto.casttype) = "Psbt"];
-  map<string, bytes> participant_tap_script_sigs = 3 [(gogoproto.customtype) = "github.com/scalarorg/scalar-core/x/covenant/exported.TapScriptSigsMap"];
+  map<string, bytes> participant_tap_script_sigs = 3 [(gogoproto.customtype) = "github.com/scalarorg/scalar-core/x/covenant/exported.ParticipantTapScriptSigs"];
   bytes finalized_tx = 4;
 }
 

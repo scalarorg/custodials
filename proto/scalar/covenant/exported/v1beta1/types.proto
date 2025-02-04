@@ -37,3 +37,12 @@ enum KeyState {
   KEY_STATE_ASSIGNED = 1 [ (gogoproto.enumvalue_customname) = "Assigned" ];
   KEY_STATE_ACTIVE = 2 [ (gogoproto.enumvalue_customname) = "Active" ];
 }
+
+message InputTapScriptSigs { repeated TapScriptSig list = 1; }
+
+message PsbtTapScriptSigs { map<uint64, InputTapScriptSigs> inner = 1; }
+
+message ParticipantTapScriptSigs {
+  string participant = 1;
+  repeated TapScriptSig list = 2;
+}

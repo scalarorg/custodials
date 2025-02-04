@@ -10,11 +10,11 @@ import (
 var _ sdk.Msg = &SubmitTapScriptSigsRequest{}
 
 // NewSubmitTapScriptSigRequest constructor for SubmitTapScriptSigRequest
-func NewSubmitTapScriptSigsRequest(sender sdk.AccAddress, sigID uint64, tapScriptSigs *exported.TapScriptSigsMap) *SubmitTapScriptSigsRequest {
+func NewSubmitTapScriptSigsRequest(sender sdk.AccAddress, sigID uint64, psbtTapScriptSigs *exported.PsbtTapScriptSigs) *SubmitTapScriptSigsRequest {
 	return &SubmitTapScriptSigsRequest{
-		Sender:           sender,
-		SigID:            sigID,
-		TapScriptSigsMap: tapScriptSigs,
+		Sender:            sender,
+		SigID:             sigID,
+		PsbtTapScriptSigs: psbtTapScriptSigs,
 	}
 }
 
@@ -25,19 +25,19 @@ func (m SubmitTapScriptSigsRequest) ValidateBasic() error {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, sdkerrors.Wrap(err, "sender").Error())
 	}
 
-	if m.TapScriptSigsMap == nil {
+	if m.PsbtTapScriptSigs == nil {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "tap script sigs is nil")
 	}
 
-	if m.TapScriptSigsMap.Inner == nil {
+	if m.PsbtTapScriptSigs.Inner == nil {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "tap script sigs is nil")
 	}
 
-	if len(m.TapScriptSigsMap.Inner) == 0 {
+	if len(m.PsbtTapScriptSigs.Inner) == 0 {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "tap script sigs is empty")
 	}
 
-	for _, tapScriptList := range m.TapScriptSigsMap.Inner {
+	for _, tapScriptList := range m.PsbtTapScriptSigs.Inner {
 		for _, tapScriptSig := range tapScriptList.List {
 			if err := tapScriptSig.ValidateBasic(); err != nil {
 				return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, err.Error())

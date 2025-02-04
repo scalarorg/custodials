@@ -52,7 +52,7 @@ func (mgr Mgr) isParticipant(p sdk.ValAddress) bool {
 	return mgr.valAddr.Equals(p)
 }
 
-func (mgr Mgr) sign(keyUID string, psbt covenantTypes.Psbt, networkKind types.NetworkKind) (*covenant.TapScriptSigsMap, error) {
+func (mgr Mgr) sign(keyUID string, psbt covenantTypes.Psbt, networkKind types.NetworkKind) (*covenant.PsbtTapScriptSigs, error) {
 	if !mgr.validateKeyID(keyUID) {
 		return nil, fmt.Errorf("invalid keyID")
 	}

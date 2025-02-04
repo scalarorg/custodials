@@ -201,6 +201,8 @@
     - [QueryService](#scalar.chains.v1beta1.QueryService)
   
 - [scalar/covenant/exported/v1beta1/types.proto](#scalar/covenant/exported/v1beta1/types.proto)
+    - [InputTapScriptSigs](#scalar.covenant.exported.v1beta1.InputTapScriptSigs)
+    - [PsbtTapScriptSigs](#scalar.covenant.exported.v1beta1.PsbtTapScriptSigs)
     - [TapScriptSig](#scalar.covenant.exported.v1beta1.TapScriptSig)
     - [TapScriptSigsList](#scalar.covenant.exported.v1beta1.TapScriptSigsList)
     - [TapScriptSigsMap](#scalar.covenant.exported.v1beta1.TapScriptSigsMap)
@@ -3515,6 +3517,36 @@ QueryService defines the gRPC querier service.
 
 
 
+<a name="scalar.covenant.exported.v1beta1.InputTapScriptSigs"></a>
+
+### InputTapScriptSigs
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `list` | [TapScriptSig](#scalar.covenant.exported.v1beta1.TapScriptSig) | repeated |  |
+
+
+
+
+
+
+<a name="scalar.covenant.exported.v1beta1.PsbtTapScriptSigs"></a>
+
+### PsbtTapScriptSigs
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `inner` | [InputTapScriptSigs](#scalar.covenant.exported.v1beta1.InputTapScriptSigs) | repeated |  |
+
+
+
+
+
+
 <a name="scalar.covenant.exported.v1beta1.TapScriptSig"></a>
 
 ### TapScriptSig
@@ -4054,7 +4086,7 @@ quorum threshold e.g.,3 |
 | `module` | [string](#string) |  |  |
 | `sig_id` | [uint64](#uint64) |  |  |
 | `participant` | [bytes](#bytes) |  |  |
-| `tap_script_sigs_map` | [scalar.covenant.exported.v1beta1.TapScriptSigsMap](#scalar.covenant.exported.v1beta1.TapScriptSigsMap) |  |  |
+| `psbt_tap_script_sigs` | [scalar.covenant.exported.v1beta1.PsbtTapScriptSigs](#scalar.covenant.exported.v1beta1.PsbtTapScriptSigs) |  |  |
 
 
 
@@ -4676,7 +4708,7 @@ Rotate key for custodian group
 | ----- | ---- | ----- | ----------- |
 | `sender` | [bytes](#bytes) |  |  |
 | `sig_id` | [uint64](#uint64) |  |  |
-| `tap_script_sigs_map` | [scalar.covenant.exported.v1beta1.TapScriptSigsMap](#scalar.covenant.exported.v1beta1.TapScriptSigsMap) |  |  |
+| `psbt_tap_script_sigs` | [scalar.covenant.exported.v1beta1.PsbtTapScriptSigs](#scalar.covenant.exported.v1beta1.PsbtTapScriptSigs) |  |  |
 
 
 

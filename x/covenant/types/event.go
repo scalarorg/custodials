@@ -39,12 +39,12 @@ func NewSigningPsbtCompleted(sigID uint64) *SigningPsbtCompleted {
 }
 
 // NewTapscriptSigsSubmitted is the constructor for event tapscript sig submitted
-func NewTapscriptSigsSubmitted(sigID uint64, participant sdk.ValAddress, tapscriptSigsMap *exported.TapScriptSigsMap) *TapScriptSigsSubmitted {
+func NewTapscriptSigsSubmitted(sigID uint64, participant sdk.ValAddress, psbtTapscriptSigs *exported.PsbtTapScriptSigs) *TapScriptSigsSubmitted {
 	return &TapScriptSigsSubmitted{
-		Module:           ModuleName,
-		SigID:            sigID,
-		Participant:      participant,
-		TapScriptSigsMap: tapscriptSigsMap,
+		Module:            ModuleName,
+		SigID:             sigID,
+		Participant:       participant,
+		PsbtTapScriptSigs: psbtTapscriptSigs,
 	}
 }
 
